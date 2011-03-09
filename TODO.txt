@@ -1,0 +1,28 @@
+
+
+IP lookup
+AS lookup
+Route map
+Overall route statistics
+IP route history
+
+
+Main Page
+	Header bar - separate entity
+	Intro of what the page is
+	Most recent changes
+	BGP route of the day
+Header
+	Home
+IP lookup
+	Route - w/ links to AS
+	Map showing JUST the route to the IP
+	generic info about IP
+
+AS lookup
+	Info about AS
+	Route from Mcgill to AS
+	map showing route to AS (and location)
+
+Recent Changes
+	list of past changes
