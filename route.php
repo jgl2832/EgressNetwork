@@ -1,41 +1,57 @@
 <html>
 <head>
-<title>Autonomous System <?php echo $_GET['as']; ?></title>
+<title>Route details</title>
 </head>
 <body>
-<h1>Autonomous System <?php echo $_GET['as']; ?></h1>
+<h1>Route Details</h1>
 <?php
 $dbhost = 'hansonbros.ece.mcgill.ca';
 $dbuser = 'bgp';
 $dbpass = 'bgppasswd';
-$conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536)
+
+$conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 	or die('Error Connecting to mySQL');
 $dbname = 'egressNetworkProj';
 mysql_select_db($dbname);
+$datetime = date( 'Y-m-d H:i:s');
+$query = 'CALL getRoute('.$_GET['id'].')';
+$result = mysql_query($query)
+	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
 
-$result = mysql_query('CALL getRouteStrByASN('.$_GET['as'].')')
-	or die(mysql_error());
+while($row = mysql_fetch_assoc($result)) {
 
-echo 'Route(s) From McGill:<br><ul>';
-
-while($row = mysql_fetch_array($result)) {
-	$last = $row['path'];
-	$token = strtok($row['path'],' ');
-	echo '<li>';
-	while ($token != false) {
-		if($token == $_GET['as']) echo '<b>';
-		echo '<a href="asPage.php?as='.$token.'">'.$token.'</a> ';
-		if($token == $_GET['as']) echo '</b>';
-		//echo $token.' ';
-		$token = strtok(" ");
-	}
-	echo ' ('.'<a href="route.php?id='.$row['idRoute'].'">details</a>)</li><br>';
+		$last = $row['path'];
+		echo 'ASN path: ';
+		$token = strtok($row['path'],' ');
+		while ($token != false) {
+			echo '<a href="asPage.php?as='.$token.'">'.$token.'</a> ';
+			//echo $token.' ';
+			$token = strtok(" ");
+		}
+		echo '<br /><br />';
+		echo 'Added: '.$row['date'].'<br /><br />';
+		if($row['inactiveDate'] != ''){
+			echo 'Removed: '.$row['inactiveDate'].'<br /><br />';
+		}
 }
-echo '</ul>';
-?>
+mysql_close($conn);
 
+$conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
+	or die('Error Connecting to mySQL');
+$dbname = 'egressNetworkProj';
+mysql_select_db($dbname);
+$query = 'SELECT * FROM Prefix WHERE idRoute = '.$_GET['id'];
+$result = mysql_query($query)
+	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
 
-<?php
+echo 'Subnets reached:<br><ul>';
+
+while($row = mysql_fetch_assoc($result)) {
+	echo '<li>'.$row['ip'].'/'.$row['range'].'</li>';
+}
+echo '</ul><br />';
+mysql_close($conn);
+
 	function getAddress($asid) {
 		exec("whois as".$asid,$asResult);
 		$queryString = "";
@@ -60,7 +76,7 @@ echo '</ul>';
 		}
 		return $queryString;
 	}
-
+	echo 'Route Map<br />';
 	echo '<img src="http://maps.google.com/maps/api/staticmap?size=500x200';
 	$token = strtok($last, ' ');
 
@@ -80,16 +96,9 @@ echo '</ul>';
 	$arr = array();
 	exec("whois as".$_GET['as'],$result);
 
-	
+
 ?>
-<p>Whois info:</p>
-<?php
-	foreach($result as $i) {
-		if (substr($i,0,1) != "#") {
-			print $i."<br>";
-		}
-	}
-?>
+
 
 </body>
-
+</html>
