@@ -8,10 +8,11 @@
 $dbhost = 'hansonbros.ece.mcgill.ca';
 $dbuser = 'bgp';
 $dbpass = 'bgppasswd';
+$dbname = 'egressNetworkProj';
 
+//Route Details
 $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 	or die('Error Connecting to mySQL');
-$dbname = 'egressNetworkProj';
 mysql_select_db($dbname);
 $datetime = date( 'Y-m-d H:i:s');
 $query = 'CALL getRoute('.$_GET['id'].')';
@@ -21,7 +22,7 @@ $result = mysql_query($query)
 while($row = mysql_fetch_assoc($result)) {
 
 		$last = $row['path'];
-		echo 'ASN path: ';
+		echo 'AS path: ';
 		$token = strtok($row['path'],' ');
 		while ($token != false) {
 			echo '<a href="asPage.php?as='.$token.'">'.$token.'</a> ';
@@ -36,9 +37,24 @@ while($row = mysql_fetch_assoc($result)) {
 }
 mysql_close($conn);
 
+
+//Agregator information
 $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 	or die('Error Connecting to mySQL');
-$dbname = 'egressNetworkProj';
+mysql_select_db($dbname);
+$query = 'SELECT ip FROM Aggregator WHERE idRoute = '.$_GET['id'];
+$result = mysql_query($query)
+	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
+
+while($row = mysql_fetch_assoc($result)) {
+	echo 'Aggregator IP: '.$row['ip'].'<br />';
+}
+echo '<br />';
+mysql_close($conn);
+
+//Prefixes
+$conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
+	or die('Error Connecting to mySQL');
 mysql_select_db($dbname);
 $query = 'SELECT * FROM Prefix WHERE idRoute = '.$_GET['id'];
 $result = mysql_query($query)
@@ -51,6 +67,11 @@ while($row = mysql_fetch_assoc($result)) {
 }
 echo '</ul><br />';
 mysql_close($conn);
+
+
+
+
+
 
 	function getAddress($asid) {
 		exec("whois as".$asid,$asResult);
