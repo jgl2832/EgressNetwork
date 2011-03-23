@@ -38,10 +38,11 @@ i = 4;
    }
 }
 extensionLength = 3;
-if (errorString == "")
-alert ("That is a valid IP address.");
-else
-alert (errorString);
+if (errorString == ""){
+	return true;}
+else{
+document.getElementById('validIP').innerHTML = 'Invalid IP Address';
+return false;}
 }
 //  End -->
 </script>
@@ -59,10 +60,11 @@ alert (errorString);
 		<p>Route of the Day: COMING SOON</p>
 		<hr>
 		<p>
-			<form>
+			<form id="ip_input"  onsubmit="return verifyIP(ip.value);" action="ip.php" method="GET" >
 				IP Address:
-				<input size=15 name="IPvalue">
-				<input type="submit" value="Search" onClick="verifyIP(IPvalue.value)";>
+				<input size=15 name="ip">
+				<input type="submit" value="Search" >
+				<span id="validIP" style="color:red"></span>
 			</form>
 		</p>
 		<hr>
