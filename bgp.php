@@ -8,6 +8,25 @@
 $dbhost = 'hansonbros.ece.mcgill.ca';
 $dbuser = 'bgp';
 $dbpass = 'bgppasswd';
+
+$conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
+	or die('Error Connecting to mySQL');
+$dbname = 'egressNetworkProj';
+mysql_select_db($dbname);
+$datetime = date( 'Y-m-d H:i:s');
+$query = 'CALL getDistinctRouteCount(\''.$datetime.'\')';
+$result = mysql_query($query)
+	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
+
+echo 'Number of distinct routes:<br><ul>';
+
+while($row = mysql_fetch_assoc($result)) {
+	
+	echo $row['count'].'<br />';
+}
+echo '</ul>';
+mysql_close($conn);
+
 $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 	or die('Error Connecting to mySQL');
 $dbname = 'egressNetworkProj';
