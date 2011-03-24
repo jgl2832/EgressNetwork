@@ -236,8 +236,8 @@ $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536)
 	or die('Error Connecting to mySQL');
 $dbname = 'egressNetworkProj';
 mysql_select_db($dbname);
-$datetime = date( 'Y-m-d H:i:s');
-$query = 'CALL getLengthDistribution(\''.$_GET['date2'].'\')';
+$datetime =  ($_GET['date2']=='')?date( 'Y-m-d H:i:s'):$_GET['date2'];
+$query = 'CALL getLengthDistribution(\''.$datetime.'\')';
 $result = mysql_query($query)
 	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
 
