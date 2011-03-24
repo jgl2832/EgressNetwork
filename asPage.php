@@ -3,6 +3,11 @@
 <title>Autonomous System <?php echo $_GET['as']; ?></title>
 </head>
 <body>
+
+<?php include("nav.php"); ?>
+
+<div id="content" style="margin-left:230px;" >
+
 <h1>Autonomous System <?php echo $_GET['as']; ?></h1>
 <?php
 $dbhost = 'hansonbros.ece.mcgill.ca';
@@ -90,6 +95,6 @@ echo '</ul>';
 		}
 	}
 ?>
-
+</div>
 </body>
-
+</html>

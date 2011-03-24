@@ -6,6 +6,11 @@
 </script>
 </head>
 <body>
+
+<?php include("nav.php"); ?>
+
+<div id="content" style="margin-left:230px;" >
+
 <h1>Recent BGP Route Changes</h1>
 
 <form action="updates.php" method="GET">
@@ -84,6 +89,6 @@ Include routes that have been removed? <input type="checkbox" name="inactive" id
 
 
 ?>
-
+</div>
 </body>
 </html>

@@ -3,6 +3,11 @@
 <title>Route details</title>
 </head>
 <body>
+
+<?php include("nav.php"); ?>
+
+<div id="content" style="margin-left:230px;" >
+
 <h1>Route Details</h1>
 <?php
 $dbhost = 'hansonbros.ece.mcgill.ca';
@@ -119,7 +124,6 @@ mysql_close($conn);
 
 
 ?>
-
-
+</div>
 </body>
 </html>

@@ -5,7 +5,14 @@
     <script language="javascript" type="text/javascript" src="flot/jquery.flot.js"></script>
 </head>
 <body>
+
+<?php include("nav.php"); ?>
+
+<div id="content" style="margin-left:230px;" >
+
 <h1>BGP Statistics</h1>
+
+
 <?php
 $dbhost = 'hansonbros.ece.mcgill.ca';
 $dbuser = 'bgp';
@@ -18,7 +25,7 @@ mysql_select_db($dbname);
 $datetime = date( 'Y-m-d H:i:s');
 $query = 'SELECT count, avgLength FROM RouteStatsHistory ORDER BY -date LIMIT 1;';
 $result = mysql_query($query)
-	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
+	or die(mysql_error());
 
 while($row = mysql_fetch_assoc($result)) {
 
@@ -68,7 +75,10 @@ $(function () {
     // a null signifies separate line segments
     //var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
     
-    $.plot($("#placeholder"), [ d1 ]);
+    $.plot($("#placeholder"), [ {
+            data: d1,
+            lines: { show: true }
+        }]);
 });
 </script>
 <br />
@@ -79,5 +89,7 @@ foreach($a as $j)
 
 ?>
 </ul>
+
+</div>
 </body>
 </html>

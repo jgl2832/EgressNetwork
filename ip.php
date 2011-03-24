@@ -3,6 +3,11 @@
 <title>IP Address <?php echo $_GET['ip']; ?></title>
 </head>
 <body>
+
+<?php include("nav.php"); ?>
+
+<div id="content" style="margin-left:230px;" >
+
 <h1>IP Address <?php echo $_GET['ip']; ?></h1>
 <?php
 $dbhost = 'hansonbros.ece.mcgill.ca';
@@ -28,7 +33,7 @@ while($row = mysql_fetch_assoc($result)) {
 		//echo $token.' ';
 		$token = strtok(" ");
 	}
-	echo '</li><br>';
+	echo ' ('.'<a href="route.php?id='.$row['idRoute'].'">details</a>)</li><br>';
 }
 echo '</ul>';
 mysql_close($conn);
@@ -91,6 +96,6 @@ mysql_close($conn);
 		}
 	}
 ?>
-
+</div>
 </body>
 
