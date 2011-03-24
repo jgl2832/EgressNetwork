@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="nav.css" /> 
+
 <SCRIPT LANGUAGE="JavaScript">
 <!-- Original:  Jay Bienvenu -->
 <!-- Web Site:  http://www.bienvenu.net -->
@@ -41,27 +43,36 @@ return false;}
 }
 //  End -->
 </script>
+
+
 	
-<div id="nav" style="float:left">
-<hr>
-	<div><a href="">Route Map</a></div>
-	<div><a href="bgp.php">BGP Statistics</a></div>
-	<div><a href="route.php">Route of the Day</a></div>
-	<div><a href="updates.php">Newest Routes</a></div>
-</p>
-<p>
-	<form name="as_input" action="asPage.php" method="get">
-		Autonomous System <br />
-		<input type="text" name="as" value="AS Number" size=15/>
-		<input type="submit" value="Search"/>
-	</form>
-</p>
-<p>
-	<form id="ip_input"  onsubmit="return verifyIP(ip.value);" action="ip.php" method="GET" >
-		IP Address <br />
-		<input size=15 name="ip">
-		<input type="submit" value="Search" >
-		<div id="validIP" style="color:red"></div>
-	</form>
-</p>
+<div id="nav">
+
+	<div id="mcgill"> McGill University </div>
+	<div id="t">BGP Network <br />Monitoring Utility</div>
+	
+	<hr>
+	
+	<a href="">Route Map</a>
+	<a href="bgp.php">BGP Statistics</a>
+	<a href="route.php">Route of the Day</a>
+	<a href="updates.php">Newest Routes</a>
+	
+	<hr>
+	
+	<div id="input">
+		<form name="as_input" action="asPage.php" method="get">
+			Autonomous System <br />
+			<input type="text" name="as" size=15/>
+			<input type="submit" value="Search"/>
+		</form>
+	</div>
+	<div id="input">
+		<form id="ip_input"  onsubmit="return verifyIP(ip.value);" action="ip.php" method="GET" >
+			IP Address <br />
+			<input size=15 name="ip">
+			<input type="submit" value="Search" >
+			<div id="validIP" style="color:red"></div>
+		</form>
+	</div>
 </div>

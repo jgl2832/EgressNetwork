@@ -1,0 +1,49 @@
+#nav {
+	float:left;
+	color: black;
+	background-color: #C0C0C0;
+	font-family: Arial, sans-serif;
+	padding:0;
+}
+
+
+#nav a {
+	display: block;
+	text-align: left;
+	margin: 0;
+	color: black;
+	padding-left: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-right: 10px;
+	text-decoration: none;
+}
+
+#nav a:hover {
+	color: white;
+	background-color: gray;
+}
+
+#input {
+	display: block;
+	text-align: left;
+	text-decoration: none;
+	background-color: #C0C0C0;
+	font-family: Arial, sans-serif;
+	margin:0;
+	
+	padding-left: 10px;
+	padding-top: 5px;
+	padding-bottom: 12px;
+	padding-right: 5px;
+}
+
+#mcgill {
+	color:red;
+	font-size: 19pt;
+	padding: 10px;
+}
+#t {
+	font-size: 14pt;
+	padding: 10px;
+}
