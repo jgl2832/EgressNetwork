@@ -3,6 +3,10 @@
 	<title>BGP Statistics</title>
 	<script language="javascript" type="text/javascript" src="flot/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="flot/jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="flot/jquery.flot.crosshair.js"></script> 
+	<link rel="stylesheet" type="text/css" href="calendar.css" />
+<script LANGUAGE="JavaScript" SRC="calendar.js">
+</script>
 </head>
 <body>
 
@@ -10,7 +14,34 @@
 
 <div id="content" style="margin-left:230px;" >
 
+
+
+<div style="float:right">
+<form action="bgp.php" method="GET">
+<div style="float:right">
+From
+<input type="text" name="date1" id="date1" size="38" value="<?php echo $_GET['date1']?>"/>
+<script type="text/javascript">
+ 		calendar.set("date1");
+</script>
+</div>
+<br />
+<div style="float:right">
+To
+<input type="text" name="date2" id="date2" size="38" value="<?php echo $_GET['date2']?>"/>
+<script type="text/javascript">
+ 		calendar.set("date2");
+</script>
+</div>
+<br />
+<input style="float:right" type="submit" value="View"/><br />
+</form>
+</div>
+
 <h1>BGP Statistics</h1>
+
+<br />
+<br />
 
 
 <?php
@@ -23,73 +54,283 @@ $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536)
 $dbname = 'egressNetworkProj';
 mysql_select_db($dbname);
 $datetime = date( 'Y-m-d H:i:s');
-$query = 'SELECT count, avgLength FROM RouteStatsHistory ORDER BY -date LIMIT 1;';
-$result = mysql_query($query)
-	or die(mysql_error());
+$query = '
+	SELECT count,avgLength,`date`
+	FROM RouteStatsHistory
+	WHERE ';
+	
+$and = '';
+if($_GET['date1'] != ''){
+	$query = $query.'`date` >= \''.$_GET['date1'].'\' ';
+	$and = ' AND ';
+}
+if($_GET['date2'] != ''){
+	$query = $query.$and.' `date` <= \''.$_GET['date2'].'\' ';
+	$and = ' AND ';
+}
+$query = $query.$and.'
+	id IS NOT NULL 
+	ORDER BY `date`;';
 
+$result = mysql_query($query)
+	or die(mysql_error()."Query: ".$query);
+$sc = '';
+$sl = '';
+$last;
 while($row = mysql_fetch_assoc($result)) {
 
-	echo 'Number of distinct routes: ';
-	echo $row['count'].'<br /><br />';
-	echo 'Average BGP Route Length: ';
-	echo $row['avgLength'].'<br /><br />';
-}
-mysql_close($conn);
+	$last = $row;
+	$sc = $sc.'|'.$row['date'].';'.$row['count'];
+	$sl = $sl.'|'.$row['date'].';'.$row['avgLength'];
 
+}
+echo 'Number of distinct routes: ';
+echo $last['count'].'<br /><br />';
+?>
+
+<div id="countGraph" style="width:600px;height:300px;"></div>
+<p id="hoverdata"></p> 
+
+<script type="text/javascript">
+var plot1;
+$(function () {
+	var str = "<?php echo $sc; ?>"
+	str = str.substr(1);
+    var d1 = str.split('|');
+    for (var i = 0; i < d1.length; i ++){
+        d1[i] = d1[i].split(';');
+		ts = (new Date(d1[i][0])).getTime();
+		d1[i][0] = ts;
+	}
+	d1.push([(new Date()).getTime(),d1[d1.length-1][1]]);
+	plot1 = $.plot($("#countGraph"),
+		  [ { data: d1, label: "Count = " + d1[d1.length-1][1]} ], {
+				series: {
+					lines: { show: true }
+				},
+				crosshair: { mode: "x" },
+				grid: { hoverable: true, autoHighlight: false },
+				xaxis: { mode: "time" }
+			});
+	
+	var legends1 = $("#countGraph .legendLabel");
+    legends1.each(function () {
+        // fix the widths so they don't jump around
+        $(this).css('width', $(this).width());
+    });
+ 
+    var updateLegendTimeout1 = null;
+    var latestPosition1 = null;
+    
+    function updateLegend1() {
+        updateLegendTimeout1 = null;
+        
+        var pos = latestPosition1;
+        
+        var axes = plot1.getAxes();
+        if (pos.x < axes.xaxis.min || pos.x > axes.xaxis.max ||
+            pos.y < axes.yaxis.min || pos.y > axes.yaxis.max)
+            return;
+ 
+        var i, j, dataset = plot1.getData();
+        for (i = 0; i < dataset.length; ++i) {
+            var series = dataset[i];
+ 
+            // find the nearest points, x-wise
+            for (j = 0; j < series.data.length; ++j)
+                if (series.data[j][0] > pos.x)
+                    break;
+            
+            // now interpolate
+            var y = series.data[j - 1];
+            legends1.eq(i).text(series.label.replace(/=.*/, "= " + y[1]));
+        }
+    }
+    
+    $("#countGraph").bind("plothover",  function (event, pos, item) {
+        latestPosition1 = pos;
+        if (!updateLegendTimeout1)
+            updateLegendTimeout1 = setTimeout(updateLegend1, 50);
+    });
+	
+});
+</script>
+<br />
+
+<?php
+echo 'Average BGP Route Length: ';
+echo $last['avgLength'].'<br /><br />';
+
+mysql_close($conn);
+?>
+<div id="avgGraph" style="width:600px;height:300px;"></div>
+
+<script type="text/javascript">
+var plot2;
+$(function () {
+	var str = "<?php echo $sl; ?>"
+	str = str.substr(1);
+    var d2 = str.split('|');
+    for (var i = 0; i < d2.length; i ++){
+        d2[i] = d2[i].split(';');
+		ts = (new Date(d2[i][0])).getTime();
+		d2[i][0] = ts;
+	}
+	d2.push([(new Date()).getTime(),d2[d2.length-1][1]]);
+	plot2 = $.plot($("#avgGraph"),
+		  [ { data: d2, label: "Average = " + d2[d2.length-1][1]} ], {
+				series: {
+					lines: { show: true }
+				},
+				crosshair: { mode: "x" },
+				grid: { hoverable: true, autoHighlight: false },
+				xaxis: { mode: "time" }
+			});
+	
+	var legends2 = $("#avgGraph .legendLabel");
+    legends2.each(function () {
+        // fix the widths so they don't jump around
+        $(this).css('width', $(this).width());
+    });
+ 
+    var updateLegendTimeout2 = null;
+    var latestPosition2 = null;
+    
+    function updateLegend2() {
+        updateLegendTimeout2 = null;
+        
+        var pos = latestPosition2;
+        
+        var axes = plot2.getAxes();
+        if (pos.x < axes.xaxis.min || pos.x > axes.xaxis.max ||
+            pos.y < axes.yaxis.min || pos.y > axes.yaxis.max)
+            return;
+ 
+        var i, j, dataset = plot2.getData();
+        for (i = 0; i < dataset.length; ++i) {
+            var series = dataset[i];
+ 
+            // find the nearest points, x-wise
+            for (j = 0; j < series.data.length; ++j)
+                if (series.data[j][0] > pos.x)
+                    break;
+            
+            // now interpolate
+            var y = series.data[j - 1];
+            legends2.eq(i).text(series.label.replace(/=.*/, "= " + (new Number(y[1])).toFixed(2)));
+        }
+    }
+    
+    $("#avgGraph").bind("plothover",  function (event, pos, item) {
+        latestPosition2 = pos;
+        if (!updateLegendTimeout2)
+            updateLegendTimeout2 = setTimeout(updateLegend2, 50);
+    });
+	
+});
+</script>
+<br />
+
+<?php
 $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 	or die('Error Connecting to mySQL');
 $dbname = 'egressNetworkProj';
 mysql_select_db($dbname);
 $datetime = date( 'Y-m-d H:i:s');
-$query = 'CALL getLengthDistribution(\''.$datetime.'\')';
+$query = 'CALL getLengthDistribution(\''.$_GET['date2'].'\')';
 $result = mysql_query($query)
 	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
 
 echo 'Route Length Distribution:<br><ul>';
-$a = array();
+$ad = array();
 $i = 0;
-$s = '';
+$sd = '';
 while($row = mysql_fetch_assoc($result)) {
 	
 	//echo $row['length'].': '.$row['count'].'<br />';
-	$a[$i] = $row['length'].': '.$row['count'];
+	$ad[$i] = $row['length'].': '.$row['count'];
 	$i = $i+1;
-	$s = $s.$row['length'].':'.$row['count'].' ';
+	$sd = $sd.' '.$row['length'].':'.$row['count'];
 }
 echo '</ul>';
 mysql_close($conn);
 
 ?>
 
-<div id="placeholder" style="width:600px;height:300px;"></div>
+<div id="distGraph" style="width:600px;height:300px;"></div>
 
 <script type="text/javascript">
+var plot;
 $(function () {
-	var str = "<?php echo $s; ?>"
-    var d1 = str.split(' ');
-    for (var i = 0; i < d1.length; i ++)
-        d1[i] = d1[i].split(':');
-
-    //var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];
-
-    // a null signifies separate line segments
-    //var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
+	var str = "<?php echo $sd; ?>"
+	str = str.substr(1);
+    var d3 = str.split(' ');
+    for (var i = 0; i < d3.length; i++)
+        d3[i] = d3[i].split(':');
+	d3.push([d3.length+1,0]);
+	
+	plot = $.plot($("#distGraph"),
+		  [ { data: d3, label: "Length: Count: "} ], {
+				series: {
+					lines: { show: true }
+				},
+				crosshair: { mode: "x" },
+				grid: { hoverable: true, autoHighlight: false }
+			});
+	
+	var legends = $("#distGraph .legendLabel");
+    legends.each(function () {
+        // fix the widths so they don't jump around
+        $(this).css('width', $(this).width());
+    });
+ 
+    var updateLegendTimeout = null;
+    var latestPosition = null;
     
-    $.plot($("#placeholder"), [ {
-            data: d1,
-            lines: { show: true }
-        }]);
+    function updateLegend() {
+        updateLegendTimeout = null;
+        
+        var pos = latestPosition;
+        
+        var axes = plot.getAxes();
+        if (pos.x < axes.xaxis.min || pos.x > axes.xaxis.max ||
+            pos.y < axes.yaxis.min || pos.y > axes.yaxis.max)
+            return;
+ 
+        var i, j, dataset = plot.getData();
+        for (i = 0; i < dataset.length; ++i) {
+            var series = dataset[i];
+ 
+            // find the nearest points, x-wise
+            for (j = 0; j < series.data.length + 1; ++j)
+                if (series.data[j][0] > pos.x)
+                    break;
+            
+            // now interpolate
+            var y = series.data[j-1];
+			var lbl = series.label.replace(/Length[^C]*/, "Length: " + y[0] + " ");
+			lbl = lbl.replace(/Count.*/, " Count: " + y[1]);
+            legends.eq(i).text(lbl);
+        }
+    }
+    
+    $("#distGraph").bind("plothover",  function (event, pos, item) {
+        latestPosition = pos;
+        if (!updateLegendTimeout)
+            updateLegendTimeout = setTimeout(updateLegend, 50);
+    });
+	
 });
 </script>
-<br />
+<br /><!--
 Values: <br /><ul>
 <?php 
-foreach($a as $j)
-	echo '<li>'.$j.'</li>';
+//foreach($ad as $j)
+//	echo '<li>'.$j.'</li>';
 
 ?>
 </ul>
-
+-->
 </div>
 </body>
 </html>

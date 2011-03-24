@@ -168,8 +168,8 @@ calendar = {
 		var div = document.getElementById(this.opt['calendar']);
 		var xy = this.getPosition(input);
 		var width = parseInt(this.getStyle(input,'width'));
-		div.style.left=(xy[0]+width+10)+"px";
-		div.style.top=xy[1]+"px";
+		div.style.left=(xy[0])+"px";
+		div.style.top=(xy[1]+20)+"px";
 
 		// Show the calendar with the date in the input as the selected date
 		var existing_date = new Date();

@@ -34,7 +34,7 @@
 	
 	padding-left: 10px;
 	padding-top: 5px;
-	padding-bottom: 12px;
+	padding-bottom: 0px;
 	padding-right: 5px;
 }
 
@@ -46,4 +46,12 @@
 #t {
 	font-size: 14pt;
 	padding: 10px;
+}
+
+#update {
+	font-size: 10pt;
+	padding-left: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-right: 10px;
 }

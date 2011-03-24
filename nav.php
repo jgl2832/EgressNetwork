@@ -36,12 +36,27 @@ i = 4;
 }
 extensionLength = 3;
 if (errorString == ""){
+	document.getElementById('validIP').innerHTML = '<br />';
 	return true;}
 else{
-document.getElementById('validIP').innerHTML = 'Invalid IP Address';
-return false;}
+	document.getElementById('validIP').innerHTML = 'Invalid IP Address';
+	return false;}
 }
 //  End -->
+
+function verifyASN(asn){
+
+	if (parseInt(asn) != asn-0 ){
+		document.getElementById('validASN').innerHTML = 'Invalid ASN';
+		return false;
+	}
+	else {
+		document.getElementById('validASN').innerHTML = '<br />';
+		return true;
+	}
+}
+
+
 </script>
 
 
@@ -61,10 +76,11 @@ return false;}
 	<hr>
 	
 	<div id="input">
-		<form name="as_input" action="asPage.php" method="get">
+		<form name="as_input" onsubmit="return verifyASN(as.value);" action="asPage.php" method="get">
 			Autonomous System <br />
 			<input type="text" name="as" size=15/>
 			<input type="submit" value="Search"/>
+			<div id="validASN" style="color:red"><br /></div>
 		</form>
 	</div>
 	<div id="input">
@@ -72,7 +88,17 @@ return false;}
 			IP Address <br />
 			<input size=15 name="ip">
 			<input type="submit" value="Search" >
-			<div id="validIP" style="color:red"></div>
+			<div id="validIP" style="color:red"><br /></div>
 		</form>
+	</div>
+	
+	<hr>
+	
+	<div id="update">
+	Data last updated:<br />
+	<br />
+	Page last modified:<br />
+	<?php echo date('F d Y H:i:s', getlastmod() ); ?><br />
+	
 	</div>
 </div>
