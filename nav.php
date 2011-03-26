@@ -68,10 +68,10 @@ function verifyASN(asn){
 	
 	<hr>
 	
-	<a href="map.php">BGP Route Map</a>
+	<a href="map.php">Route Graph</a>
 	<a href="bgp.php">BGP Statistics</a>
-	<a href="route.php">BGP Route of the Day</a>
-	<a href="updates.php">BGP Route Updates</a>
+	<a href="route.php">Route of the Day</a>
+	<a href="updates.php">Recent Changes</a>
 	
 	<hr>
 	
