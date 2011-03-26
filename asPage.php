@@ -21,20 +21,26 @@ mysql_select_db($dbname);
 $result = mysql_query('CALL getRouteStrByASN('.$_GET['as'].')')
 	or die(mysql_error());
 
-echo 'Route(s) From McGill:<br><ul>';
-
-while($row = mysql_fetch_array($result)) {
-	$last = $row['path'];
-	$token = strtok($row['path'],' ');
-	echo '<li>';
-	while ($token != false) {
-		if($token == $_GET['as']) echo '<b>';
-		echo '<a href="asPage.php?as='.$token.'">'.$token.'</a> ';
-		if($token == $_GET['as']) echo '</b>';
-		//echo $token.' ';
-		$token = strtok(" ");
+$row = mysql_fetch_array($result);
+if($last == '') { 
+	echo "No AS found with the given ASN.<br />";}
+else {
+	echo 'Route(s) From McGill:<br><ul>';
+	while($row) {
+		$last = $row['path'];
+	
+		$token = strtok($row['path'],' ');
+		echo '<li>';
+		while ($token != false) {
+			if($token == $_GET['as']) echo '<b>';
+			echo '<a href="asPage.php?as='.$token.'">'.$token.'</a> ';
+			if($token == $_GET['as']) echo '</b>';
+			//echo $token.' ';
+			$token = strtok(" ");
+		}
+		echo ' ('.'<a href="route.php?id='.$row['idRoute'].'">details</a>)</li><br>';
+		$row = mysql_fetch_array($result);
 	}
-	echo ' ('.'<a href="route.php?id='.$row['idRoute'].'">details</a>)</li><br>';
 }
 echo '</ul>';
 ?>

@@ -96,9 +96,13 @@ function verifyASN(asn){
 	<!--
 	<div id="update">
 	Data last updated:<br />
-	<br />
+	<br />-->
+	<div id="update">
 	Page last modified:<br />
-	<?php //echo date('F d Y H:i:s', getlastmod() ); ?><br />
-	-->
+	<?php 
+		date_default_timezone_set('America/Montreal');
+		echo date('F d Y H:i:s', getlastmod() );
+	?><br />
+	
 	</div>
 </div>

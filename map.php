@@ -77,7 +77,7 @@
 	
 		function init(){
 		
-			Config.showLabels = false;
+			Config.showLabels = true;
 		
 			canvas = new Canvas('hypertree', '#555', '#555');
 			canvas.setPosition();

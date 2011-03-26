@@ -1197,7 +1197,7 @@ HT.prototype= {
     	this.timesToInterval= 0;
     	this.setFlag(true);
     	if(this.config.showLabels)
-    		setTimeout("ht.makeLabelsForCenteredNode();", 200);
+    		setTimeout("ht.makeLabelsForCenteredNode();", 500);
     } else {
     	this.moebiusTransformation(1, at.scale(-this.relativeScale));
     }
