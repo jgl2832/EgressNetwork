@@ -121,54 +121,12 @@ echo '</ul>';
 
 <div id="map_canvas" style="width: 500px; height: 200px"></div>	
 <?php
-<<<<<<< HEAD
-=======
-	function getAddress($asid) {
-		exec("whois as".$asid,$asResult);
-		$queryString = "";
-		foreach($asResult as $i) {
-			
-			if (strncmp(strtolower($i), 'address:',8) == 0) {
-				$addString = str_replace(" ","+",trim(substr($i, 8)));
-				$queryString = $queryString."".$addString.",";
-			}
-			if (strncmp(strtolower($i),'city:',5) == 0) {
-				$addString = str_replace(" ","+",trim(substr($i,5) ));
-				$queryString = $queryString."".$addString.",";
-			}
-			if (strncmp(strtolower($i),'stateprov:',10) == 0) {
-				$addString = str_replace(" ","+",trim(substr($i,10)));
-				$queryString = $queryString."".$addString.",";
-			}
-			if (strncmp(strtolower($i),'country:',8) == 0) {
-				$addString = str_replace(" ","+",trim(substr($i,8)));
-				$queryString = $queryString."".$addString;
-			}	
-		}
-		return $queryString;
-	}
+
 	
 	if($error == 0){
 	
-		echo '<img src="http://maps.google.com/maps/api/staticmap?size=500x200';
-		$token = strtok($last, ' ');
-
-		while ($token != false) {
-			echo '&markers=size:large|color:green|'.getAddress($token);
-			$token = strtok(' ');
-		}
-	/*
-		echo '&path=color:0xff0000ff|weight:5';
-		$token = strtok($last, ' ');
-		while ($token != false) {
-			echo '|'.getAddress($token);
-		}
-	*/
-		echo '&sensor=false" />';
-
 		$arr = array();
 		exec("whois as".$_GET['as'],$result);
->>>>>>> aafa388feac46480fa32391052d3a447e220ea7a
 
 		echo "<p>Whois info:</p>";
 
