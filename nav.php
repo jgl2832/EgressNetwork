@@ -64,7 +64,7 @@ function verifyASN(asn){
 <div id="nav">
 
 	<div id="mcgill"> McGill University </div>
-	<div id="t"><a href="map.php">BGP Network <br />Monitoring Utility</a></div>
+	<a href="index.php">BGP Network <br />Monitoring Utility</a>
 	
 	<hr>
 	
