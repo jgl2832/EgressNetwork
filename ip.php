@@ -99,6 +99,15 @@ $result = mysql_query($query)
 echo 'Subnets and their routes from McGill:<br><ul>';
 
 while($row = mysql_fetch_assoc($result)) {
+
+$row = mysql_fetch_array($result);
+$error = 0;
+if($row == '') { 
+	echo "No IP information found for the given IP address.<br />";
+	$error = 1;}
+else {
+	echo 'Subnets and their routes from McGill:<br><ul>';
+	while($row) {
 	
 	$token = strtok($row['path'],' ');
 	echo '<li>';

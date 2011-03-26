@@ -12,6 +12,8 @@
 <div id="content" style="margin-left:230px;" >
 
 <h1>Recent BGP Route Changes</h1>
+<br />
+<br />
 
 <form action="updates.php" method="GET">
 View changes between
@@ -29,6 +31,8 @@ Limit to <input type="text" name="limit" id="limit" size="4" value="10"/> result
 Include routes that have been removed? <input type="checkbox" name="inactive" id="inactive" /><br />
 <input type="submit" value="View"/><br />
 </form>
+<br />
+<br />
 <br />
 <br />
 Recent Changes:<br /><br />
