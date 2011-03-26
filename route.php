@@ -48,6 +48,8 @@ $result = mysql_query($query)
   var map;
   var geocoder;
   var bounds;
+  var poly;
+  var locs = [];
     var latlng = new google.maps.LatLng(73, 43);
     var bounds = new google.maps.LatLngBounds();
   function initialize() {
@@ -57,9 +59,17 @@ $result = mysql_query($query)
       center: latlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }
+    var polyOptions = {
+    		strokeColor: '#000000',
+    		strokeOpacity: 1.0,
+    		strokeWeight: 3
+  	}
+
+    poly = new google.maps.Polyline(polyOptions);
+
     map = new google.maps.Map(document.getElementById("map_canvas"),
         myOptions);
-
+    poly.setMap(map);
 <?php
 
 	while($row = mysql_fetch_assoc($result)) {
@@ -67,24 +77,29 @@ $result = mysql_query($query)
 	}
 	$token = strtok($last, ' ');
 	while ($token != false) {
-		echo 'codeAddress("'.getAddress($token).'");';
+		echo 'codeAddress("'.getAddress($token).'","'.$token.'");';
 		$token = strtok(' ');
 	}
 ?>
+
   }
-function codeAddress(address) {
+function codeAddress(address, id) {
 	
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
+	var path = poly.getPath();
+
+  	path.push(results[0].geometry.location);
 	bounds.extend(results[0].geometry.location);
         map.fitBounds(bounds);
+
         var marker = new google.maps.Marker({
             map: map, 
+	    cursor: id,
+	    title: id,
             position: results[0].geometry.location
         });
-      } else {
-        alert("Geocode was not successful for the following reason: " + status);
-      }
+      } 
     });
 	
   }
@@ -145,7 +160,9 @@ while($row = mysql_fetch_assoc($result)) {
 }
 echo '<br />';
 mysql_close($conn);
-
+?>
+<div id="map_canvas" style="width: 500px; height: 200px"></div>	
+<?php
 //Prefixes
 $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 	or die('Error Connecting to mySQL');

@@ -5,7 +5,7 @@
 	<body>
 	<?php include("nav.php"); ?>
 	<div id="content" style="margin-left:230px;" >
-		<h1>Welcome to the McGill University Egress Network Monitoring Utility Page!</h1>
+		<h1>Welcome to the McGill University Egress Network Monitoring and Analytics Page!</h1>
 		<br />
 		<br />
 		This website displays information about all BGP Routes from McGill.<br />

@@ -63,21 +63,21 @@ function verifyASN(asn){
 	
 <div id="nav">
 
-	<div id="mcgill"> McGill University </div>
-	<a href="index.php">BGP Network <br />Monitoring Utility</a>
+	<div id="mcgill">McGill University</div>
+	<a href="index.php">Egress Network<br />Monitoring and Analytics</a>
 	
 	<hr>
 	
-	<a href="map.php">Route Map</a>
+	<a href="map.php">BGP Route Map</a>
 	<a href="bgp.php">BGP Statistics</a>
-	<a href="route.php">Route of the Day</a>
-	<a href="updates.php">Newest Routes</a>
+	<a href="route.php">BGP Route of the Day</a>
+	<a href="updates.php">Recent BGP Route Updates</a>
 	
 	<hr>
 	
 	<div id="input">
 		<form name="as_input" onsubmit="return verifyASN(as.value);" action="asPage.php" method="get">
-			Autonomous System Lookup <br />
+			ASN Lookup <br />
 			<input type="text" name="as" size=15/>
 			<input type="submit" value="Search"/>
 			<div id="validASN" style="color:red"><br /></div>
