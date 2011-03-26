@@ -21,27 +21,32 @@ $query = 'CALL getPrefixByIP(\''.$_GET['ip'].'\')';
 $result = mysql_query($query)
 	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
 
-echo 'Subnets and their routes from McGill:<br><ul>';
 
-while($row = mysql_fetch_assoc($result)) {
+
+$row = mysql_fetch_array($result);
+$error = 0;
+if($row == '') { 
+	echo "No match found.<br />";
+	$error = 1;}
+else {
+	echo 'Subnets and their routes from McGill:<br><ul>';
+	while($row) {
 	
-	$token = strtok($row['path'],' ');
-	echo '<li>';
-	echo $row['ip'].'/'.$row['range'].': ';
-	while ($token != false) {
-		echo '<a href="asPage.php?as='.$token.'">'.$token.'</a> ';
-		//echo $token.' ';
-		$token = strtok(" ");
+		$token = strtok($row['path'],' ');
+		echo '<li>';
+		echo $row['ip'].'/'.$row['range'].': ';
+		while ($token != false) {
+			echo '<a href="asPage.php?as='.$token.'">'.$token.'</a> ';
+			//echo $token.' ';
+			$token = strtok(" ");
+		}
+		echo ' ('.'<a href="route.php?id='.$row['idRoute'].'">details</a>)</li><br>';
+		$row = mysql_fetch_array($result);
 	}
-	echo ' ('.'<a href="route.php?id='.$row['idRoute'].'">details</a>)</li><br>';
 }
 echo '</ul>';
 mysql_close($conn);
 
-?>
-
-
-<?php
 	function getAddress($asid) {
 		exec("whois as".$asid,$asResult);
 		$queryString = "";
@@ -67,33 +72,35 @@ mysql_close($conn);
 		return $queryString;
 	}
 
-	echo '<img src="http://maps.google.com/maps/api/staticmap?size=500x200';
-	$token = strtok($last, ' ');
+	if($error == 0){
+	
+		echo '<img src="http://maps.google.com/maps/api/staticmap?size=500x200';
+		$token = strtok($last, ' ');
 
-	while ($token != false) {
-		echo '&markers=size:large|color:green|'.getAddress($token);
-		$token = strtok(' ');
-	}
-/*
-	echo '&path=color:0xff0000ff|weight:5';
-	$token = strtok($last, ' ');
-	while ($token != false) {
-		echo '|'.getAddress($token);
-	}
-*/
-	echo '&sensor=false" />';
+		while ($token != false) {
+			echo '&markers=size:large|color:green|'.getAddress($token);
+			$token = strtok(' ');
+		}
+	/*
+		echo '&path=color:0xff0000ff|weight:5';
+		$token = strtok($last, ' ');
+		while ($token != false) {
+			echo '|'.getAddress($token);
+		}
+	*/
+		echo '&sensor=false" />';
 
-	$arr = array();
-	exec("whois ".$_GET['ip'],$result);
+		$arr = array();
+		exec("whois ".$_GET['ip'],$result);
 
 	
-?>
-<p><a href="traceroute.php?ip=<?php echo $_GET['ip']?>">Click here for traceroute info</a> (May take up to a minute to display)</p> 
-<p>Whois info:</p>
-<?php
-	foreach($result as $i) {
-		if (substr($i,0,1) != "#") {
-			print $i."<br>";
+		echo "<p><a href=\"traceroute.php?ip=\"".$_GET['ip']."\">Click here for traceroute info</a> (May take up to a minute to display)</p>";
+		echo "<p>Whois info:</p>";
+
+		foreach($result as $i) {
+			if (substr($i,0,1) != "#") {
+				print $i."<br>";
+			}
 		}
 	}
 ?>

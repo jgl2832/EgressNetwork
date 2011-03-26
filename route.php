@@ -2,6 +2,7 @@
 <head>
 <title>Route details</title>
 <?php
+	date_default_timezone_set('America/Montreal');
 	function getAddress($asid) {
 		exec("whois as".$asid,$asResult);
 		$queryString = "";

@@ -18,12 +18,14 @@ $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536)
 $dbname = 'egressNetworkProj';
 mysql_select_db($dbname);
 
-$result = mysql_query('CALL getRouteStrByASN('.$_GET['as'].')')
+$result = mysql_query('CALL getRouteStrByLastASN('.$_GET['as'].')')
 	or die(mysql_error());
 
 $row = mysql_fetch_array($result);
+$error = 0;
 if($row == '') { 
-	echo "No AS found with the given ASN.<br />";}
+	echo "No AS found with the given ASN.<br />";
+	$error = 1;}
 else {
 	echo 'Route(s) From McGill:<br><ul>';
 	while($row) {
@@ -71,34 +73,36 @@ echo '</ul>';
 		}
 		return $queryString;
 	}
-
-	echo '<img src="http://maps.google.com/maps/api/staticmap?size=500x200';
-	$token = strtok($last, ' ');
-
-	while ($token != false) {
-		echo '&markers=size:large|color:green|'.getAddress($token);
-		$token = strtok(' ');
-	}
-/*
-	echo '&path=color:0xff0000ff|weight:5';
-	$token = strtok($last, ' ');
-	while ($token != false) {
-		echo '|'.getAddress($token);
-	}
-*/
-	echo '&sensor=false" />';
-
-	$arr = array();
-	exec("whois as".$_GET['as'],$result);
-
 	
-?>
-<p>Whois info:</p>
-<?php
-	foreach($result as $i) {
-		if (substr($i,0,1) != "#") {
-			print $i."<br>";
+	if($error == 0){
+	
+		echo '<img src="http://maps.google.com/maps/api/staticmap?size=500x200';
+		$token = strtok($last, ' ');
+
+		while ($token != false) {
+			echo '&markers=size:large|color:green|'.getAddress($token);
+			$token = strtok(' ');
 		}
+	/*
+		echo '&path=color:0xff0000ff|weight:5';
+		$token = strtok($last, ' ');
+		while ($token != false) {
+			echo '|'.getAddress($token);
+		}
+	*/
+		echo '&sensor=false" />';
+
+		$arr = array();
+		exec("whois as".$_GET['as'],$result);
+
+		echo "<p>Whois info:</p>";
+
+		foreach($result as $i) {
+			if (substr($i,0,1) != "#") {
+				print $i."<br>";
+			}
+		}
+	
 	}
 ?>
 </div>
