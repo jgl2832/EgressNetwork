@@ -96,7 +96,7 @@ function codeAddress(address, id) {
 $row = mysql_fetch_array($result);
 $error = 0;
 if($row == '') { 
-	echo "No AS found with the given ASN.<br />";
+	echo "No AS information found for the given ASN.<br />";
 	$error = 1;}
 else {
 	echo 'Route(s) From McGill:<br><ul>';
