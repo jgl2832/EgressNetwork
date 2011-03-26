@@ -96,22 +96,30 @@ $query = 'CALL getPrefixByIP(\''.$_GET['ip'].'\')';
 $result = mysql_query($query)
 	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
 
-echo 'Subnets and their routes from McGill:<br><ul>';
 
-while($row = mysql_fetch_assoc($result)) {
-	
-	$token = strtok($row['path'],' ');
-	echo '<li>';
-	echo $row['ip'].'/'.$row['range'].': ';
-	while ($token != false) {
-		echo '<a href="asPage.php?as='.$token.'">'.$token.'</a> ';
-		//echo $token.' ';
-		$token = strtok(" ");
+$row = mysql_fetch_array($result);
+$error = 0;
+if($row == '') { 
+	echo "No IP information found for the given IP address.<br />";
+	$error = 1;}
+else {
+	echo 'Subnets and their routes from McGill:<br><ul>';
+	while($row) {
+
+		$token = strtok($row['path'],' ');
+		echo '<li>';
+		echo $row['ip'].'/'.$row['range'].': ';
+		while ($token != false) {
+			echo '<a href="asPage.php?as='.$token.'">'.$token.'</a> ';
+			//echo $token.' ';
+			$token = strtok(" ");
+		}
+		echo ' ('.'<a href="route.php?id='.$row['idRoute'].'">details</a>)</li><br>';
+		$row = mysql_fetch_array($result);
 	}
-	echo ' ('.'<a href="route.php?id='.$row['idRoute'].'">details</a>)</li><br>';
-}
-echo '</ul>';
-mysql_close($conn);
+
+	echo '</ul>';
+	mysql_close($conn);
 
 
 
@@ -129,6 +137,7 @@ mysql_close($conn);
 			print $i."<br>";
 		}
 	}
+}
 ?>
 </div>
 </body>
