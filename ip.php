@@ -84,10 +84,11 @@ mysql_close($conn);
 	echo '&sensor=false" />';
 
 	$arr = array();
-	exec("whois as".$_GET['as'],$result);
+	exec("whois ".$_GET['ip'],$result);
 
 	
 ?>
+<p><a href="traceroute.php?ip=<?php echo $_GET['ip']?>">Click here for traceroute info</a> (May take up to a minute to display)</p> 
 <p>Whois info:</p>
 <?php
 	foreach($result as $i) {
