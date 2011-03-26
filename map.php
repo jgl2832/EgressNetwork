@@ -111,7 +111,7 @@
 				}
 				
 				ht.addAdjacence(n + "_a", m + "_a");
-				document.getElementById('progress').innerHTML = i+1;
+				//document.getElementById('progress').innerHTML = i+1;
 			}
 			ht.initialize();
 			ht.printOn(canvas);
@@ -127,10 +127,8 @@
 		<br />
 		<br />
 		
-		Loaded: <span id="progress"></span> of <span id="total"></span>
-					
+		 Autonomous systems: <span id="total"></span>
 		
-			
 		
 		<canvas id="hypertree" style="border:1px solid #fff; margin-bottom:15px;" width="500" height="500"></canvas>
 
