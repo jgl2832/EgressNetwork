@@ -26,7 +26,7 @@ $result = mysql_query($query)
 $row = mysql_fetch_array($result);
 $error = 0;
 if($row == '') { 
-	echo "No IP information found with the given IP address.<br />";
+	echo "No IP information found for the given IP address.<br />";
 	$error = 1;}
 else {
 	echo 'Subnets and their routes from McGill:<br><ul>';
