@@ -13,6 +13,7 @@
 			or die('Error Connecting to mySQL');
 		$dbname = 'egressNetworkProj';
 		mysql_select_db($dbname);
+		date_default_timezone_set('America/Montreal');
 		$datetime = date( 'Y-m-d H:i:s');
 		$query = '
 			SELECT 

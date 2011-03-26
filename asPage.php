@@ -22,7 +22,7 @@ $result = mysql_query('CALL getRouteStrByASN('.$_GET['as'].')')
 	or die(mysql_error());
 
 $row = mysql_fetch_array($result);
-if($last == '') { 
+if($row == '') { 
 	echo "No AS found with the given ASN.<br />";}
 else {
 	echo 'Route(s) From McGill:<br><ul>';
