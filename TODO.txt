@@ -26,3 +26,24 @@ AS lookup
 
 Recent Changes
 	list of past changes
+
+
+_________
+
+set up python/solana autorun 
+
+work on route map - Fred
+
+update static google images to dynamic - Jake
+
+port forward hansonbros
+
+add more graphs - Fred
+
+Error pages - Fred
+
+IP traceroute - Jake
+
+geoip IP addresses
+
+
