@@ -1,7 +1,7 @@
 
 <html>
 	<head>
-		<title>BGP Map</title>
+		<title>BGP Route Graph</title>
 		<script language="javascript" type="text/javascript" src="hypertree1.0.js"></script>
 		
 		<?php
@@ -123,9 +123,9 @@
 	
 	<div id="content" style="margin-left:230px;" >
 
-		<h1>BGP Map</h1>
+		<h1>BGP Route Graph</h1>
 		
-		Loading: <span id="progress"></span> of <span id="total"></span>
+		Loaded: <span id="progress"></span> of <span id="total"></span>
 					
 		
 			
