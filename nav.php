@@ -77,7 +77,7 @@ function verifyASN(asn){
 	
 	<div id="input">
 		<form name="as_input" onsubmit="return verifyASN(as.value);" action="asPage.php" method="get">
-			Autonomous System <br />
+			Autonomous System Lookup <br />
 			<input type="text" name="as" size=15/>
 			<input type="submit" value="Search"/>
 			<div id="validASN" style="color:red"><br /></div>
@@ -85,7 +85,7 @@ function verifyASN(asn){
 	</div>
 	<div id="input">
 		<form id="ip_input"  onsubmit="return verifyIP(ip.value);" action="ip.php" method="GET" >
-			IP Address <br />
+			IP Address Lookup <br />
 			<input size=15 name="ip">
 			<input type="submit" value="Search" >
 			<div id="validIP" style="color:red"><br /></div>
