@@ -84,7 +84,7 @@ while($row = mysql_fetch_assoc($result)) {
 	$sl = $sl.'|'.$row['date'].';'.$row['avgLength'];
 
 }
-echo 'Number of distinct routes: ';
+echo 'Number of Distinct Routes: ';
 echo $last['count'].'<br /><br />';
 ?>
 
@@ -229,7 +229,7 @@ $(function () {
 	
 });
 </script>
-<br />
+<br /><br />
 
 <?php
 $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
