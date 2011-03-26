@@ -93,12 +93,12 @@ function verifyASN(asn){
 	</div>
 	
 	<hr>
-	
+	<!--
 	<div id="update">
 	Data last updated:<br />
 	<br />
 	Page last modified:<br />
-	<?php echo date('F d Y H:i:s', getlastmod() ); ?><br />
-	
+	<?php //echo date('F d Y H:i:s', getlastmod() ); ?><br />
+	-->
 	</div>
 </div>
