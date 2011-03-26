@@ -124,6 +124,8 @@
 	<div id="content" style="margin-left:230px;" >
 
 		<h1>BGP Route Graph</h1>
+		<br />
+		<br />
 		
 		Loaded: <span id="progress"></span> of <span id="total"></span>
 					
