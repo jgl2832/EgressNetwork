@@ -119,12 +119,14 @@ else {
 echo '</ul>';
 ?>
 
-<div id="map_canvas" style="width: 500px; height: 200px"></div>	
+
 <?php
 
 	
 	if($error == 0){
-	
+?>
+	<div id="map_canvas" style="width: 500px; height: 200px"></div>	
+<?php
 		$arr = array();
 		exec("whois as".$_GET['as'],$result);
 
