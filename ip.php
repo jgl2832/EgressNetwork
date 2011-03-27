@@ -225,7 +225,7 @@ if($row['path'] == '') {
 	echo "No IP information found for the given IP address.<br />";
 	$error = 1;}
 else {
-	echo 'Routes from McGill to subnets containing this ip, and the date the route was discovered.:<br><ul>';
+	echo 'Routes from McGill to subnets containing this IP and the date when the route was discovered:<br><ul>';
 	while($row) {
 
 		$token = strtok($row['path'],' ');
