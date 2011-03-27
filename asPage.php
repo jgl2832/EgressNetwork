@@ -35,7 +35,7 @@ $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536)
 $dbname = 'egressNetworkProj';
 mysql_select_db($dbname);
 
-$result = mysql_query('CALL getRouteStrByLastASN('.$_GET['as'].')')
+$result = mysql_query('CALL getRouteStrByASN('.$_GET['as'].')')
 	or die(mysql_error());
 ?>
 
