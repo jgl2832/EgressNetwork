@@ -99,11 +99,11 @@ $result = mysql_query($query)
 
 $row = mysql_fetch_array($result);
 $error = 0;
-if($row == '') { 
+if($row['path'] == '') { 
 	echo "No IP information found for the given IP address.<br />";
 	$error = 1;}
 else {
-	echo 'Subnets and their routes from McGill:<br><ul>';
+	echo 'Routes from McGill to subnets containing this ip, and the date the route was discovered.:<br><ul>';
 	while($row) {
 
 		$token = strtok($row['path'],' ');
@@ -114,7 +114,7 @@ else {
 			//echo $token.' ';
 			$token = strtok(" ");
 		}
-		echo ' ('.'<a href="route.php?id='.$row['idRoute'].'">details</a>)</li><br>';
+		echo ' ('.'<a href="route.php?id='.$row['idRoute'].'">details</a>) - '.$row['date'].'</li><br>';
 		$row = mysql_fetch_array($result);
 	}
 
