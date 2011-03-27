@@ -96,7 +96,7 @@ function codeAddress(address, id) {
 $row = mysql_fetch_array($result);
 $error = 0;
 if($row == '') { 
-	echo "No AS information found for the given ASN.<br />";
+	echo "No route information found for the given ASN.<br />";
 	$error = 1;}
 else {
 	echo 'Route(s) From McGill:<br><ul>';
@@ -128,17 +128,24 @@ echo '</ul>';
 	<div id="map_canvas" style="width: 500px; height: 200px"></div>	
 <?php
 		$arr = array();
+
+	
+	}
+
 		exec("whois as".$_GET['as'],$result);
 
-		echo "<p>Whois info:</p>";
+		echo "<br><b>Whois info:</b>";
 
 		foreach($result as $i) {
 			if (substr($i,0,1) != "#") {
-				print $i."<br>";
+				if ($i == "Unknown AS number or IP network. Please upgrade this program.") {
+					print "Unknown AS number or IP network.<br>";
+				} else {
+					print $i."<br>";
+				}
 			}
+			
 		}
-	
-	}
 ?>
 </div>
 </body>
