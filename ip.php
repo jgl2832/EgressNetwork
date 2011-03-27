@@ -99,7 +99,7 @@ $result = mysql_query($query)
 
 $row = mysql_fetch_array($result);
 $error = 0;
-if($row == '') { 
+if($row['path'] == '') { 
 	echo "No IP information found for the given IP address.<br />";
 	$error = 1;}
 else {
@@ -129,8 +129,8 @@ else {
 	
 ?>
 <div id="map_canvas" style="width: 500px; height: 200px"></div>	
-<p><a href="traceroute.php?ip=<?php echo $_GET['ip']?>">Click here for traceroute info</a> (May take up to a minute to display)</p> 
-<p>Whois info:</p>
+<br><b><a href="traceroute.php?ip=<?php echo $_GET['ip']?>">Click here for traceroute info</a></b> (May take up to a minute to display)<br>
+<br><b>Whois info:</b>
 <?php
 	foreach($result as $i) {
 		if (substr($i,0,1) != "#") {
