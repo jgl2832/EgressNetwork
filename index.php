@@ -14,7 +14,7 @@
 		<ul>
 		<li>Jake Levine</li>
 		<li>Eubene Sa</li>
-		<li>Frederic Weigand Warr</li>
+		<li>Frédéric Weigand-Warr</li>
 		</ul>
 		Under the supervision of Professor Michael Rabbat and with help from Ph.D. student Zhe Yao
 	</div>
