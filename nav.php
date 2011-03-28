@@ -69,7 +69,7 @@ function verifyASN(asn){
 	
 	<hr>
 	
-	<a href="map.php">Route Graph</a>
+	<a href="loadGraph.php">Route Graph</a>
 	<a href="bgp.php">BGP Statistics</a>
 	<a href="random.php">Random Route</a>
 	<a href="updates.php">Recent Changes</a>

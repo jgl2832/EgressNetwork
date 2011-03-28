@@ -2,35 +2,65 @@
 <html>
 	<head>
 		<title>BGP Route Graph</title>
+		
 		<script language="javascript" type="text/javascript" src="hypertree1.0.js"></script>
-		<script language="javascript" type="text/javascript" src="Jit/jit-yc.js"></script> 
 		
 		<?php
 		$dbhost = 'hansonbros.ece.mcgill.ca';
 		$dbuser = 'bgp';
 		$dbpass = 'bgppasswd';
+		$dbname = 'egressNetworkProj';
 
 		$conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 			or die('Error Connecting to mySQL');
-		$dbname = 'egressNetworkProj';
 		mysql_select_db($dbname);
-		date_default_timezone_set('America/Montreal');
-		$datetime = date( 'Y-m-d H:i:s');
 		$query = '
-			SELECT 
-				fGetASN(idAS) as asn1,
-				fGetASN(idNextAS) as asn2
-			FROM RouteTree
-			WHERE idNextAS IS NOT NULL';
+			select distinct
+				a1.asn as asn1,
+				a2.asn as asn2
+				from RouteTree
+				join ASys AS a1 on a1.idAS = RouteTree.idAS
+				join ASys AS a2 on a2.idAS = RouteTree.idNextAS
+				limit 1000;';
 			
 		$result = mysql_query($query)
 			or die(mysql_error()."Query: ".$query);
 		$s = '';
+		$bgpt = array();
+		$i = 0;
 		while($row = mysql_fetch_assoc($result)) {
 
 			$s = $s.'|'.$row['asn1'].';'.$row['asn2'];
-
+			
+			// $bgpt[$i] = $row;
+			// $i = $i + 1;
 		}
+		mysql_close($conn);
+		// echo $bgpt[2]['asn1'];
+		// function buildJSON($parent){
+			
+			// global $bgpt;
+			// echo $bgpt[2]['asn1'];
+			
+			// if($parent != ""){
+				// //echo "test";
+				// //echo $GLOBALS['bgpt'][2]['asn1'];
+				// $children = '';
+				// foreach ($bgpt as $r) {
+					// //echo "asn1: ".$r['asn1']." asn2: ".r$['asn2'];
+					
+					// if($parent == $r['asn1']){
+						// //$children = $children.", "."child";
+						// $children = $children.", ".buildJSON($r['asn2']);
+					// }
+				// }
+				// $children = substr($children, 2);
+				// return "{ id: \"".$parent."\", name: \"".$parent."\", data: {}, children: [".$children."]}";
+			// } else return "";
+			
+		// }
+		
+		// $data = buildJSON(17356);
 		?>
 		
 		<script type="text/javascript">
@@ -89,7 +119,7 @@
 
 			ht = new HT(Config, canvas);
 
-			var str = "<?php echo $s; ?>";
+			var str = "<?php echo $s ?>";
 			var str = str.substr(1);
 			var data = str.split('|');
 			document.getElementById('links').innerHTML = data.length;
@@ -122,8 +152,11 @@
 		}
 		
 		</script>
+		
+		
+		
 	</head>
-	<body onload="">
+	<body onload="init();">
 	<?php include("nav.php"); ?>
 	
 	<div id="content" style="margin-left:230px;" >
@@ -131,7 +164,6 @@
 		<h1>BGP Route Graph</h1>
 		<br />
 		<br />
-		<div id="loading">Please wait while the hyperbolic graph is loaded.</div>
 		<div id="loaded" style="">
 			Autonomous Systems: <span id="total"></span><br />
 			Links: <span id="links"></span><br />
@@ -140,157 +172,7 @@
 		
 		<canvas id="hypertree" style="border:1px solid #fff; margin-bottom:15px;" width="500" height="500"></canvas>
 		<div id="ht" ></div>
-		<div id="infovis"></div>
-		
-		<script type="text/javascript">
-		
-			// var Log = {
-				// elem: false,
-				// write: function(text){
-					// if (!this.elem) 
-						// this.elem = document.getElementById('log');
-					// this.elem.innerHTML = text;
-					// this.elem.style.left = (500 - this.elem.offsetWidth / 2) + 'px';
-				// }
-			// };
-		
-			// //Create a new ST instance  
-			// var st = new $jit.ST({  
-			// //id of viz container element  
-			// injectInto: 'infovis',  
-			// //set duration for the animation  
-			// duration: 800,  
-			// //set animation transition type  
-			// transition: $jit.Trans.Quart.easeInOut,  
-			// //set distance between node and its children  
-			// levelDistance: 50,  
-			// //enable panning  
-			// Navigation: {  
-			  // enable:true,  
-			  // panning:true  
-			// },  
-			// //set node and edge styles  
-			// //set overridable=true for styling individual  
-			// //nodes or edges  
-			// Node: {  
-				// height: 20,  
-				// width: 60,  
-				// type: 'rectangle',  
-				// color: '#aaa',  
-				// overridable: true  
-			// },  
-			  
-			// Edge: {  
-				// type: 'bezier',  
-				// overridable: true  
-			// },  
-			  
-			// onBeforeCompute: function(node){  
-				// Log.write("loading " + node.name);  
-			// },  
-			  
-			// onAfterCompute: function(){  
-				// Log.write("done");  
-			// },  
-			  
-			// //This method is called on DOM label creation.  
-			// //Use this method to add event handlers and styles to  
-			// //your node.  
-			// onCreateLabel: function(label, node){  
-				// label.id = node.id;              
-				// label.innerHTML = node.name;  
-				// label.onclick = function(){  
-					// if(normal.checked) {  
-					  // st.onClick(node.id);  
-					// } else {  
-					// st.setRoot(node.id, 'animate');  
-					// }  
-				// };  
-				// //set label styles  
-				// var style = label.style;  
-				// style.width = 60 + 'px';  
-				// style.height = 17 + 'px';              
-				// style.cursor = 'pointer';  
-				// style.color = '#333';  
-				// style.fontSize = '0.8em';  
-				// style.textAlign= 'center';  
-				// style.paddingTop = '3px';  
-			// },  
-			  
-			// //This method is called right before plotting  
-			// //a node. It's useful for changing an individual node  
-			// //style properties before plotting it.  
-			// //The data properties prefixed with a dollar  
-			// //sign will override the global node style properties.  
-			// onBeforePlotNode: function(node){  
-				// //add some color to the nodes in the path between the  
-				// //root node and the selected node.  
-				// if (node.selected) {  
-					// node.data.$color = "#ff7";  
-				// }  
-				// else {  
-					// delete node.data.$color;  
-					// //if the node belongs to the last plotted level  
-					// if(!node.anySubnode("exist")) {  
-						// //count children number  
-						// var count = 0;  
-						// node.eachSubnode(function(n) { count++; });  
-						// //assign a node color based on  
-						// //how many children it has  
-						// node.data.$color = ['#aaa', '#baa', '#caa', '#daa', '#eaa', '#faa'][count];                      
-					// }  
-				// }  
-			// },  
-			  
-			// //This method is called right before plotting  
-			// //an edge. It's useful for changing an individual edge  
-			// //style properties before plotting it.  
-			// //Edge data proprties prefixed with a dollar sign will  
-			// //override the Edge global style properties.  
-			// onBeforePlotLine: function(adj){  
-				// if (adj.nodeFrom.selected && adj.nodeTo.selected) {  
-					// adj.data.$color = "#eed";  
-					// adj.data.$lineWidth = 3;  
-				// }  
-				// else {  
-					// delete adj.data.$color;  
-					// delete adj.data.$lineWidth;  
-				// }  
-			// }  
-		// });  
-		// //load data  
-		// var str = "<?php echo $s; ?>";
-		// var str = str.substr(1);
-		// var data = str.split('|');
-		// document.getElementById('total').innerHTML = data.length;
-		// var count = 0;
-		// for (var i = 0; i < data.length; i++){
-			// var edge = data[i].split(';');
 			
-			// if(!st.graph.nodes[edge[0]]){
-				// st.graph.addNode(edge[0],edge[0]);
-			// }
-			
-			// if(!st.graph.nodes[edge[1]]){
-				// st.graph.addNode(edge[1],edge[1]);
-			// }
-			
-			// st.graph.addAdjacence(edge[0], edge[1]);
-			// //document.getElementById('progress').innerHTML = i+1;
-		// } 
-		// //compute node positions and layout  
-		// st.compute();  
-		// //optional: make a translation of the tree  
-		// st.geom.translate(new $jit.Complex(-200, 0), "current");  
-		// //emulate a click on the root node.  
-		// st.onClick(st.root);  
-		
-		
-		window.onLoad = init();
-		</script>
-		
-		
-		
 		
 	</div>
 	<div id="log" ></div> 
