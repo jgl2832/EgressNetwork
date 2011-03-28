@@ -164,6 +164,9 @@
 		<h1>BGP Route Graph</h1>
 		<br />
 		<br />
+		
+		<a href="tree.php">View as Tree</a>
+		
 		<div id="loaded" style="">
 			Autonomous Systems: <span id="total"></span><br />
 			Links: <span id="links"></span><br />
