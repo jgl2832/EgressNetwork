@@ -42,12 +42,111 @@ To
 
 <br />
 <br />
+<?php
+$dbhost = 'hansonbros.ece.mcgill.ca';
+$dbuser = 'bgp';
+$dbpass = 'bgppasswd';
 
+$conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
+	or die('Error Connecting to mySQL');
+$dbname = 'egressNetworkProj';
+mysql_select_db($dbname);
+
+//setup graph
+$graph = new stdclass;
+$graph->width = 500;
+$graph->height = 350;
+
+$graph->data=array();
+
+$query = 'select tbl.idAS,a.asn,count(*) from (select distinct idAS,idNextAS from RouteTree) AS tbl JOIN ASys a on a.idAS=tbl.idAS group by tbl.idAS order by count(*) desc limit 10';
+$result = mysql_query($query)
+	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
+
+while($row = mysql_fetch_assoc($result)) {
+	$graph->data[$row['asn']] = $row['count(*)'];
+}
+
+$graph->setGradient = array('red', 'maroon');
+$graph->setLegend = 'true';
+$graph->setLegendTitle = 'Connections';
+$graph->setTitle = 'Top Autonomous Systems (by # of AS connected to)';
+$graph->setTitleLocation = 'left';
+ 
+//JSON encode graph object
+$encoded = urlencode(json_encode($graph));
+ 
+//retrieve XML
+$target = 'http://www.ebrueggeman.com/phpgraphlib/api/?g=' . $encoded . '&type=xml';
+$xml_object =  new SimpleXMLElement($target, NULL, TRUE);
+ 
+//if there are no errors, display graph
+if (empty($xml_object->error)) {
+  echo $xml_object->imageTag;
+  echo "<br>";
+}
+else {
+  echo 'There was an error generating the graph: '. $xml_object->error;
+}
+
+
+mysql_close($conn);
+
+?>
 
 <?php
 $dbhost = 'hansonbros.ece.mcgill.ca';
 $dbuser = 'bgp';
 $dbpass = 'bgppasswd';
+
+$conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
+	or die('Error Connecting to mySQL');
+$dbname = 'egressNetworkProj';
+mysql_select_db($dbname);
+
+//setup graph
+$graph = new stdclass;
+$graph->width = 500;
+$graph->height = 350;
+
+$graph->data=array();
+
+$query = 'select r.idAS,a.asn,count(*) from RouteTree r JOIN ASys a on a.idAS=r.idAS group by r.idAS order by count(*) desc limit 10';
+$result = mysql_query($query)
+	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
+
+while($row = mysql_fetch_assoc($result)) {
+	$graph->data[$row['asn']] = $row['count(*)'];
+}
+
+$graph->setGradient = array('red', 'maroon');
+$graph->setLegend = 'true';
+$graph->setLegendTitle = 'Routes';
+$graph->setTitle = 'Top Autonomous Systems (by number of routes they belong to)';
+$graph->setTitleLocation = 'left';
+ 
+//JSON encode graph object
+$encoded = urlencode(json_encode($graph));
+ 
+//retrieve XML
+$target = 'http://www.ebrueggeman.com/phpgraphlib/api/?g=' . $encoded . '&type=xml';
+$xml_object =  new SimpleXMLElement($target, NULL, TRUE);
+ 
+//if there are no errors, display graph
+if (empty($xml_object->error)) {
+  echo $xml_object->imageTag;
+  echo "<br>";
+}
+else {
+  echo 'There was an error generating the graph: '. $xml_object->error;
+}
+
+
+mysql_close($conn);
+
+?>
+
+<?php
 
 $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 	or die('Error Connecting to mySQL');
