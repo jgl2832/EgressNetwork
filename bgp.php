@@ -15,7 +15,7 @@
 <div id="content" style="margin-left:230px;" >
 
 
-
+<!--
 <div style="float:right">
 <form action="bgp.php" method="GET">
 <div style="float:right">
@@ -37,6 +37,7 @@ To
 <input style="float:right" type="submit" value="View"/><br />
 </form>
 </div>
+-->
 
 <h1>BGP Statistics</h1>
 
