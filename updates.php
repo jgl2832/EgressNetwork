@@ -28,7 +28,9 @@ and
 </script>.
 <br />
 Limit to <input type="text" name="limit" id="limit" size="4" value="10"/> results.<br />
+<!--
 Include routes that have been removed? <input type="checkbox" name="inactive" id="inactive" /><br />
+-->
 <input type="submit" value="View"/><br />
 </form>
 <br />
