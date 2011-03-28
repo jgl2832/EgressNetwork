@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Route details</title>
+<title>Route Details</title>
 <?php
 	date_default_timezone_set('America/Montreal');
 	function getAddress($asid) {
@@ -114,7 +114,7 @@ function codeAddress(address, id) {
 
 <div id="content" style="margin-left:230px;" >
 
-<h1>Route Details</h1>
+<h1>Route Details</h1><br /><br />
 <?php
 
 mysql_close($conn);
@@ -171,7 +171,7 @@ $query = 'SELECT * FROM Prefix WHERE idRoute = '.$_GET['id'];
 $result = mysql_query($query)
 	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
 
-echo 'Subnets reached:<br><ul>';
+echo '<br /><br />Subnets reached:<br><ul>';
 
 while($row = mysql_fetch_assoc($result)) {
 	echo '<li>'.$row['ip'].'/'.$row['range'].'</li>';
