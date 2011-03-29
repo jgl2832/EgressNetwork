@@ -17,22 +17,26 @@
 		$conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 			or die('Error Connecting to mySQL');
 		mysql_select_db($dbname);
+		
 		$query = '
 			select distinct
 				a1.asn as asn1,
 				a2.asn as asn2
 				from RouteTree
 				join ASys AS a1 on a1.idAS = RouteTree.idAS
-				join ASys AS a2 on a2.idAS = RouteTree.idNextAS
-				limit 50;';
+				join ASys AS a2 on a2.idAS = RouteTree.idNextAS ';
+		if($_GET['as'] != '') $query = $query . 'where a1.asn = ' . $_GET['as']; 
+		$query = $query . ' limit 50;';
 			
 		$result = mysql_query($query)
 			or die(mysql_error()."Query: ".$query);
-		$s = '';
+		$s = '{ id: "' . $_GET['as'] . '", name: "' . $_GET['as'] . '", data: {}, children: [  ';
 		while($row = mysql_fetch_assoc($result)) {
 
-			$s = $s.'|'.$row['asn1'].';'.$row['asn2'];
+			$s = $s.'{ id: "' . $row['asn2'] . '", name: "' . $row['asn2'] . '", data: {}, children: []}, ';
 		}
+		$s = substr($s, 0, $s.length - 2);
+		$s = $s.']}';
 		mysql_close($conn);
 		?>
 		
@@ -75,7 +79,7 @@
 			//id of viz container element  
 			injectInto: 'infovis',  
 			//set duration for the animation  
-			duration: 800,  
+			duration: 500,  
 			//set animation transition type  
 			transition: $jit.Trans.Quart.easeInOut,  
 			//set distance between node and its children  
@@ -113,8 +117,9 @@
 			//Use this method to add event handlers and styles to  
 			//your node.  
 			onCreateLabel: function(label, node){  
-				label.id = node.id;              
-				label.innerHTML = node.name;  
+				label.id = node.id;				
+				if(localStorage.getItem("as" + node.name)) label.innerHTML = node.name;
+				else label.innerHTML = "<a href=tree2.php?as=" + node.name + ">" + node.name + "</a>";  
 				label.onclick = function(){  
 					  st.onClick(node.id);
 				};  
@@ -146,7 +151,7 @@
 					if(!node.anySubnode("exist")) {  
 						//count children number  
 						var count = 0;  
-						node.eachSubnode(function(n) { count++; });  
+						//node.eachSubnode(function(n) { count++; });  
 						//assign a node color based on  
 						//how many children it has  
 						node.data.$color = ['#aaa', '#baa', '#caa', '#daa', '#eaa', '#faa'][count];                      
@@ -172,22 +177,43 @@
 			});
 			
 		
-			var str = <?php echo '"'.$s.'"'; ?>;
-			arr = str.split("|");
+			var str = <?php echo "'".$s."'"; ?>;
+			var asn = <?php echo '"'.$_GET['as'].'"'; ?>;
+			
+			
+			localStorage.setItem( "as" + asn, str);
+			
 			
 			//load data  
-			json = eval('(' + buildJSON(17356) + ')');
+			json = eval('(' + localStorage.getItem('as17356') + ')');
 			
 			//load json data  
 			st.loadJSON(json); 
+			
+			
+			
 			//compute node positions and layout  
 			st.compute();  
 			//optional: make a translation of the tree  
 			st.geom.translate(new $jit.Complex(-200, 0), "current");  
 			//emulate a click on the root node.  
 			st.onClick(st.root);  
+			
+			
+			for (var i = 0; i < localStorage.length; i++){
+				var askey = localStorage.key(i)
+				var subtree = eval('(' + localStorage.getItem(askey) + ')');
+				subtree.id = askey.substr(2);
+				st.addSubtree(eval(subtree),"replot",{onComplete:function(){}});
+			}
+			
+			setTimeout("center()", 2000);
+			
+			
 		}
-		
+		function center(){
+			st.onClick(<?php echo '"'.$_GET['as'].'"'; ?>);
+		}
 		
 		</script> 
 		
