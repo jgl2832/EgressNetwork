@@ -82,6 +82,8 @@ $result = mysql_query($query)
 	}
 ?>
 
+	var path = poly.getPath();
+
   }
 function codeAddress(address, id) {
 	
