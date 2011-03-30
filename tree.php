@@ -119,7 +119,7 @@
 			onCreateLabel: function(label, node){  
 				label.id = node.id;				
 				if(localStorage.getItem("as" + node.name)) label.innerHTML = node.name;
-				else label.innerHTML = "<a href=tree2.php?as=" + node.name + ">" + node.name + "</a>";  
+				else label.innerHTML = "<a href=tree.php?as=" + node.name + ">" + node.name + "</a>";  
 				label.onclick = function(){  
 					  st.onClick(node.id);
 				};  
