@@ -70,21 +70,22 @@ function verifyASN(asn){
 	<hr>
 	
 	<a href="loadgraph.php">Route Graph</a>
-	<a href="bgp.php">BGP Statistics</a>
+	<a href="bgp.php">Statistics Graps</a>
+	<a href="lists.php">Statistics Lists</a>
 	<a href="random.php">Random Route</a>
 	<a href="updates.php">Recent Changes</a>
 	
 	<hr>
 	
-	<div id="input">
+	<div class="input">
 		<form name="as_input" onsubmit="return verifyASN(as.value);" action="asPage.php" method="get">
 			ASN Lookup <br />
-			<input type="text" name="as" size=15/>
+			<input type="text" name="as" size="15" />
 			<input type="submit" value="Search"/>
 			<div id="validASN" style="color:red"><br /></div>
 		</form>
 	</div>
-	<div id="input">
+	<div class="input">
 		<form id="ip_input"  onsubmit="return verifyIP(ip.value);" action="ip.php" method="GET" >
 			IP Address Lookup <br />
 			<input size=15 name="ip">
