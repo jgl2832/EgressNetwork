@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>BGP Statistics</title>
+	<title>BGP Statistics Graphs</title>
 	<script language="javascript" type="text/javascript" src="flot/jquery.js"></script>
 	<script language="javascript" type="text/javascript" src="flot/jquery.flot.js"></script>
 	<script language="javascript" type="text/javascript" src="flot/jquery.flot.crosshair.js"></script> 
@@ -40,7 +40,7 @@ To
 -->
 
 
-<h1>BGP Statistics</h1>
+<h1>BGP Statistics Graphs</h1>
 
 <br />
 <br />

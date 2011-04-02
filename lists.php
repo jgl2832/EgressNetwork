@@ -1,6 +1,6 @@
 ﻿<html>
 <head>
-	<title>Recent BGP Route Changes</title>
+	<title>BGP Statistics Lists</title>
 	<link rel="stylesheet" type="text/css" href="calendar.css" />
 	<script type="text/javascript" src="calendar.js"></script>
 </head>
@@ -10,7 +10,7 @@
 
 <div id="content" style="margin-left:230px;" >
 
-<h1>Statistics Lists</h1>
+<h1>BGP Statistics Lists</h1>
 <br />
 <br />
 
