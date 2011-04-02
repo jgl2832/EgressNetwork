@@ -13,7 +13,8 @@
  exec("traceroute ".$_GET['ip'],$result);
 ?>
 
-<p>Traceroute info:</p>
+<h1>Traceroute info:</h1>
+<br />
 <?php
 	$open = '(';
 	$close = ')';
