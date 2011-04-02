@@ -165,7 +165,7 @@
 		<br />
 		<br />
 		
-		<a href="tree.php?as=17356">View as Tree</a>
+		<a href="tree.php?as=17356">View as a tree</a>
 		
 		<div id="loaded" style="">
 			Autonomous Systems: <span id="total"></span><br />

@@ -2,7 +2,7 @@
 <head>
 	<title>BGP Statistics</title>
 	<script language="javascript" type="text/javascript" src="flot/jquery.js"></script>
-    <script language="javascript" type="text/javascript" src="flot/jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="flot/jquery.flot.js"></script>
 	<script language="javascript" type="text/javascript" src="flot/jquery.flot.crosshair.js"></script> 
 	<link rel="stylesheet" type="text/css" href="calendar.css" />
 <script LANGUAGE="JavaScript" SRC="calendar.js">
@@ -39,6 +39,7 @@ To
 </div>
 -->
 
+
 <h1>BGP Statistics</h1>
 
 <br />
@@ -71,7 +72,7 @@ while($row = mysql_fetch_assoc($result)) {
 $graph->setGradient = array('red', 'maroon');
 $graph->setLegend = 'true';
 $graph->setLegendTitle = 'Connections';
-$graph->setTitle = 'Top Autonomous Systems (by # of AS connected to)';
+$graph->setTitle = 'Top Autonomous Systems (by the # of ASs Connected to)';
 $graph->setTitleLocation = 'left';
  
 //JSON encode graph object
@@ -94,6 +95,7 @@ else {
 mysql_close($conn);
 
 ?>
+<br />
 
 <?php
 $dbhost = 'hansonbros.ece.mcgill.ca';
@@ -123,7 +125,7 @@ while($row = mysql_fetch_assoc($result)) {
 $graph->setGradient = array('red', 'maroon');
 $graph->setLegend = 'true';
 $graph->setLegendTitle = 'Routes';
-$graph->setTitle = 'Top Autonomous Systems (by number of routes they belong to)';
+$graph->setTitle = 'Top Autonomous Systems (by the # of routes they belong to)';
 $graph->setTitleLocation = 'left';
  
 //JSON encode graph object
@@ -146,6 +148,7 @@ else {
 mysql_close($conn);
 
 ?>
+<br />
 
 <?php
 
@@ -184,6 +187,7 @@ while($row = mysql_fetch_assoc($result)) {
 	$sl = $sl.'|'.$row['date'].';'.$row['avgLength'];
 
 }
+echo '<br />';
 echo 'Number of Distinct Routes: ';
 echo $last['count'].'<br /><br />';
 ?>
@@ -329,7 +333,7 @@ $(function () {
 	
 });
 </script>
-<br /><br />
+<br />
 
 <?php
 $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
@@ -341,6 +345,7 @@ $query = 'CALL getLengthDistribution(\''.$datetime.'\')';
 $result = mysql_query($query)
 	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
 
+echo '<br />';
 echo 'Route Length Distribution:<br><ul>';
 $ad = array();
 $i = 0;
