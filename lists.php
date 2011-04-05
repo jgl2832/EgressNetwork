@@ -28,7 +28,7 @@ and
  		calendar.set("date2");
 </script>.
 -->
-<span style="float:left;width:80px;padding-top:4px;">List type: </span>
+<span>List type: </span>
 <select name="type" id="type">
 	<option value="long">Longest routes</option>
 	<option value="short">Shortest routes</option>
@@ -40,13 +40,12 @@ and
 	<option value="dest">Destination ASs with most routes</option>
 	-->
 </select>
-<br />
-<span style="float:left;width:80px;padding-top:4px;">Limit results: </span>
-<input type="text" name="limit" id="limit" size="4" value="10"/><br />
+<br /><br />
+<span>Limit results: </span>
+<input type="text" name="limit" id="limit" size="4" value="10"/><br /><br />
 <!--
 Include routes that have been removed? <input type="checkbox" name="inactive" id="inactive" /><br />
 -->
-<span style="float:left;width:80px;padding-top:4px;">&nbsp;</span>
 <input type="submit" value="View"/><br />
 </form>
 </div>
