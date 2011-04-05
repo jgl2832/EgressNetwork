@@ -251,7 +251,9 @@ else {
 	
 ?>
 <div id="map_canvas" style="width: 500px; height: 200px"></div>	
+<!--
 <br><b><a href="traceroute.php?ip=<?php echo $_GET['ip']?>">Click here for traceroute info</a></b> (May take up to a minute to display)<br>
+-->
 <br><b>Whois info:</b>
 <?php
 	foreach($result as $i) {
