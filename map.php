@@ -1,4 +1,13 @@
+<!--
+map.php
 
+Egress Network Monitoring
+ECSE 477
+
+Jake Levine				260206403
+Eubene Sa 				260271182
+Frédéric Weigand-Warr	260191111
+-->
 <html>
 	<head>
 		<title>BGP Route Graph</title>
@@ -6,6 +15,8 @@
 		<script language="javascript" type="text/javascript" src="hypertree1.0.js"></script>
 		
 		<?php
+
+		// Connect to DB
 		$dbhost = 'hansonbros.ece.mcgill.ca';
 		$dbuser = 'bgp';
 		$dbpass = 'bgppasswd';
@@ -14,6 +25,7 @@
 		$conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 			or die('Error Connecting to mySQL');
 		mysql_select_db($dbname);
+		// Custom query to get connected AS nodes
 		$query = '
 			select distinct
 				a1.asn as asn1,
@@ -28,8 +40,9 @@
 		$s = '';
 		$bgpt = array();
 		$i = 0;
+		// For each result
 		while($row = mysql_fetch_assoc($result)) {
-
+			// Append to query string
 			$s = $s.'|'.$row['asn1'].';'.$row['asn2'];
 			
 			// $bgpt[$i] = $row;
@@ -64,7 +77,7 @@
 		?>
 		
 		<script type="text/javascript">
-		
+		// Code for map
 		function addEvent( obj, type, fn ) {
 			if (obj.addEventListener) {
 				obj.addEventListener( type, fn, false );
@@ -115,10 +128,11 @@
 			canvas = new Canvas('hypertree', '#555', '#555');
 			canvas.setPosition();
 			canvas.translateToCenter();
+			// register clicks
 			addEvent(canvas.canvas, 'click', function (e) { Mouse.capturePosition(e); ht.translate(Mouse); });
 
 			ht = new HT(Config, canvas);
-
+			// Add query string from php
 			var str = "<?php echo $s ?>";
 			var str = str.substr(1);
 			var data = str.split('|');
