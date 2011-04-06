@@ -1,3 +1,13 @@
+<!--
+ip.php
+
+Egress Network Monitoring
+ECSE 477
+
+Jake Levine				260206403
+Eubene Sa 				260271182
+Frédéric Weigand-Warr	260191111
+-->
 <html>
 <head>
 <title>IP Address <?php echo $_GET['ip']; ?></title>
@@ -84,6 +94,7 @@ class xmlToArrayParser {
 
 
 <?php
+	// Get address function	
 	function getAddress($asid) {
 		exec("whois ".$asid,$asResult);
 		$queryString = "";
@@ -114,7 +125,7 @@ class xmlToArrayParser {
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false">
 </script>
 <script type="text/javascript">
-
+	// Google map code
   var map;
   var geocoder;
     var latlng = new google.maps.LatLng(73, 43);
@@ -127,13 +138,15 @@ class xmlToArrayParser {
       center: latlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-  
+  	// Attach map to map_canvas div in html
     map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
 	
 	
 <?php
+	// Below line is outdated code address call.  does not work as nicely as the quova system
+	//echo 'codeAddress("'.getAddress($_GET['ip']).'","'.$_GET['ip'].'");';
 
-	##echo 'codeAddress("'.getAddress($_GET['ip']).'","'.$_GET['ip'].'");';
+	// Add latlon with quova
 	echo 'addLatLon("'.$_GET['ip'].'");';
 ?>
 
@@ -141,6 +154,7 @@ class xmlToArrayParser {
 
 function addLatLon(id) {
 	<?php
+// Quova code
 // initiate curl and set options
 
 $ver = 'v1/';
@@ -151,18 +165,23 @@ $timestamp = gmdate('U'); // 1200603038
 $sig = md5($apikey . $secret . $timestamp);
 $service = 'http://api.quova.com/';
 
-
+// Assemble a query string
 $querystring = $service.'v1/ipinfo/'.$_GET['ip'].'?apikey='.$apikey.'&sig='.$sig;
+
+// Execute curl statement
 exec('curl "'.$querystring.'"',$curlResult);
+// For each result (should only be one, but just in case)
 foreach($curlResult as $i) {
+	// Get result object and array
 	$domObj = new xmlToArrayParser($i); 
   	$domArr = $domObj->array; 
 	
+	// Pull out only lat/lon info
 	$lat = $domArr['ipinfo']['Location']['latitude'];
 	$lon = $domArr['ipinfo']['Location']['longitude'];
 }
 	?>
-
+	// Add these lat/lon values into javascript code and create marker
 	var latlon = new google.maps.LatLng(<?php echo $lat ?>, <?php echo $lon ?>);
 	map.setCenter(latlon);
 	var marker = new google.maps.Marker({
@@ -206,7 +225,7 @@ function codeAddress(address, id) {
 
 
 
-
+// Connect to DB
 $dbhost = 'hansonbros.ece.mcgill.ca';
 $dbuser = 'bgp';
 $dbpass = 'bgppasswd';
@@ -214,11 +233,13 @@ $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536)
 	or die('Error Connecting to mySQL');
 $dbname = 'egressNetworkProj';
 mysql_select_db($dbname);
+
+// Query for prefixes that the IP belongs to.
 $query = 'CALL getPrefixByIP(\''.$_GET['ip'].'\')';
 $result = mysql_query($query)
 	or die("Query failed: " . mysql_error() . "<br /> Query: " . $query);
 
-
+// For each result, print  (if none, display error message)
 $row = mysql_fetch_array($result);
 $error = 0;
 if($row['path'] == '') { 
@@ -227,7 +248,7 @@ if($row['path'] == '') {
 else {
 	echo 'Routes from McGill to subnets containing this IP and the date when the route was discovered:<br><ul>';
 	while($row) {
-
+		// Display Each route to the prefix and make ASes linkable
 		$token = strtok($row['path'],' ');
 		echo '<li>';
 		echo $row['ip'].'/'.$row['range'].': ';
@@ -246,16 +267,19 @@ else {
 
 
 	$arr = array();
+	// Display whois info
 	exec("whois ".$_GET['ip'],$result);
 
 	
 ?>
 <div id="map_canvas" style="width: 500px; height: 200px"></div>	
 <!--
+TRACEROUTE INFO link - deactivated because traceroute cant work from hansonbros
 <br><b><a href="traceroute.php?ip=<?php echo $_GET['ip']?>">Click here for traceroute info</a></b> (May take up to a minute to display)<br>
 -->
 <br><b>Whois info:</b>
 <?php
+	// Display each line that isn't a comment
 	foreach($result as $i) {
 		if (substr($i,0,1) != "#") {
 			print $i."<br>";
