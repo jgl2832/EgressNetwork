@@ -226,9 +226,12 @@ function codeAddress(address, id) {
 
 
 // Connect to DB
+
+include("login_info.php");
+
 $dbhost = 'hansonbros.ece.mcgill.ca';
-$dbuser = 'bgp';
-$dbpass = 'bgppasswd';
+$dbuser = $username;
+$dbpass = $password;
 $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 	or die('Error Connecting to mySQL');
 $dbname = 'egressNetworkProj';

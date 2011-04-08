@@ -55,9 +55,12 @@ To
 <br />
 <br />
 <?php
+
+include("login_info.php");
+
 $dbhost = 'hansonbros.ece.mcgill.ca';
-$dbuser = 'bgp';
-$dbpass = 'bgppasswd';
+$dbuser = $username;
+$dbpass = $password;
 
 $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 	or die('Error Connecting to mySQL');
@@ -108,9 +111,6 @@ mysql_close($conn);
 <br />
 
 <?php
-$dbhost = 'hansonbros.ece.mcgill.ca';
-$dbuser = 'bgp';
-$dbpass = 'bgppasswd';
 
 $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 	or die('Error Connecting to mySQL');

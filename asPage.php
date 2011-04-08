@@ -42,10 +42,12 @@ Frédéric Weigand-Warr	260191111
 		return $queryString;
 	}
 
+include("login_info.php");
+
 // Connect to DB
 $dbhost = 'hansonbros.ece.mcgill.ca';
-$dbuser = 'bgp';
-$dbpass = 'bgppasswd';
+$dbuser = $username;
+$dbpass = $password;
 $conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536)
 	or die('Error Connecting to mySQL');
 $dbname = 'egressNetworkProj';

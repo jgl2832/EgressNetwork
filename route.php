@@ -40,10 +40,11 @@ Frédéric Weigand-Warr	260191111
 	}
 
 // Connect to DB
+include("login_info.php");
 
 $dbhost = 'hansonbros.ece.mcgill.ca';
-$dbuser = 'bgp';
-$dbpass = 'bgppasswd';
+$dbuser = $username;
+$dbpass = $password;
 $dbname = 'egressNetworkProj';
 
 //Route Details

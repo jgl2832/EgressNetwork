@@ -76,9 +76,12 @@ for (i=0;i<document.getElementById('type').length;i++) {
 
 
 <?php
+
+	include("login_info.php");
+
 	$dbhost = 'hansonbros.ece.mcgill.ca';
-	$dbuser = 'bgp';
-	$dbpass = 'bgppasswd';
+	$dbuser = $username;
+	$dbpass = $password;
 
 	$conn = mysql_connect($dbhost,$dbuser,$dbpass, true, 65536) 
 		or die('Error Connecting to mySQL');
