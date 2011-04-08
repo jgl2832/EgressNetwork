@@ -1,13 +1,3 @@
-<!--
-index.php
-
-Egress Network Monitoring
-ECSE 477
-
-Jake Levine				260206403
-Eubene Sa 				260271182
-Frédéric Weigand-Warr	260191111
--->
 <html>
 	<head>
 		<title>Egress Network Monitoring and Analytics</title>
@@ -27,6 +17,12 @@ Frédéric Weigand-Warr	260191111
 		<li>Frédéric Weigand-Warr</li>
 		</ul>
 		Under the supervision of Professor Michael Rabbat and with help from Ph.D. student Zhe Yao
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		Tested on Google Chrome 10.0.648, Mozilla Firefox 4.0, and Microsoft Internet Explorer 8.
 	</div>
 	</body>
 </html>
