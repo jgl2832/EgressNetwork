@@ -1,0 +1,102 @@
+
+<html>
+	<head>
+		<title>Egress Network Monitoring</title>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!-- Original:  Jay Bienvenu -->
+<!-- Web Site:  http://www.bienvenu.net -->
+
+<!-- This script and many more are available free online at -->
+<!-- The JavaScript Source!! http://javascript.internet.com -->
+
+<!-- Begin
+function verifyIP (IPvalue) {
+errorString = "";
+theName = "IPaddress";
+
+var ipPattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+var ipArray = IPvalue.match(ipPattern);
+
+if (IPvalue == "0.0.0.0")
+errorString = errorString + theName + ': '+IPvalue+' is a special IP address and cannot be used here.';
+else if (IPvalue == "255.255.255.255")
+errorString = errorString + theName + ': '+IPvalue+' is a special IP address and cannot be used here.';
+if (ipArray == null)
+errorString = errorString + theName + ': '+IPvalue+' is not a valid IP address.';
+else {
+for (i = 0; i < 4; i++) {
+thisSegment = ipArray[i];
+if (thisSegment > 255) {
+errorString = errorString + theName + ': '+IPvalue+' is not a valid IP address.';
+i = 4;
+}
+if ((i == 0) && (thisSegment > 255)) {
+errorString = errorString + theName + ': '+IPvalue+' is a special IP address and cannot be used here.';
+i = 4;
+      }
+   }
+}
+extensionLength = 3;
+if (errorString == ""){
+	return true;}
+else{
+document.getElementById('validIP').innerHTML = 'Invalid IP Address';
+return false;}
+}
+//  End -->
+</script>
+
+	</head>
+
+	<body background="img/space_216.gif">
+<span style="color:yellow">
+
+		<h1>Welcome to the McGill University Egress Network Monitoring Utility Page! (MUENMUP)</h1>
+		<marquee bgcolor="black"><p><img src="img/hamster dance.gif" width="30" height="30" />Last Updated: March 9th, 2011<img src="img/hamster dance.gif" width="30" height="30" /></p></marquee>
+		<hr>
+		<img src="img/hamster dance.gif" width="150" height="150" />
+		<img src="img/computer_clipart1.gif" width="150" height="150"/>
+		<img src="img/clip.jpg" width="150" height="150" />
+		<img src="img/people.jpg" width="150" height="150" />
+		<img src="img/computer.png" width="150" height="150" />
+		<img src="img/hamster dance.gif" width="150" height="150" />
+		<hr>
+		<p>
+			<a href="">Map of BGP Routes</a> &nbsp | &nbsp <a href="bgp.php">BGP Statistics</a>
+		</p>
+		<hr>
+		<p>Route of the Day: COMING SOON</p>
+		<hr>
+		<p>
+			<form id="ip_input"  onsubmit="return verifyIP(ip.value);" action="ip.php" method="GET" >
+				IP Address:
+				<input size=15 name="ip">
+				<input type="submit" value="Search" >
+				<span id="validIP" style="color:red"></span>
+			</form>
+		</p>
+		<hr>
+		<p>
+			<form name="as_input" action="asPage.php" method="get">
+				AS Lookup: &nbsp 
+				<input type="text" name="as" value="AS Number"/>
+				<input type="submit" value="Search"/>
+			</form>
+		</p>
+		<hr>
+		<p>
+			Latest Route Update: 
+			<table bgcolor="White" border="5">
+				<tr>
+					<td>Updates</td>
+					<td>will</td>
+					<td>go</td>
+					<td>here!</td>
+				</tr>
+			</table>
+			<a href="updates.php">See All Updates</a>
+		</p>
+</span>
+	</body>
+</html>
