@@ -1,1 +1,18 @@
-testing testing 123 testing
+Egress Network Monitoring Project
+McGill University
+Jake Levine (260206403)
+Eubene Sa (260271182)
+Frédéric Weigand-Warr (260191111)
+
+September 2010 - April 2011
+---------
+The work found in this repository was done as a year-long project to create a website front end for analyzing BGP routes from McGill University to everywhere else on the internet.  
+For any questions or comments about our work, we can be reached at the following email addresses:
+Jake - jgl2832@gmail.com
+Eubene - eubene.sa@gmail.com
+Fred - fwwarr@gmail.com
+---------
+NOTE: In order to use our project with the HansonBros server database, you must run 'register.py' and enter a valid username and password for the server.  If you do not do this, and make no other modifications, the PHP and SQL code will crash and most of the site will not be functional. This is your fair warning.
+
+
+
