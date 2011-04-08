@@ -22,7 +22,7 @@
 		<br />
 		<br />
 		<br />
-		Tested on Google Chrome 10.0.648, Mozilla Firefox 4.0, and Microsoft Internet Explorer 8.
+		Tested on Google Chrome 10.0.648, Lynx 2.8.7, Microsoft Internet Explorer 8, Mozilla Firefox 4.0
 	</div>
 	</body>
 </html>
